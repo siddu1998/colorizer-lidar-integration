@@ -19,7 +19,14 @@ style.use('ggplot')
 
 #load data frame of sign 
 df_sign = pd.read_csv('signs.csv')
-print(df_sign)
+#create df with only required 
+df1 = df_sign[['pX','pY','Retro']]
+print(df1.head())
+
+x3=[i for i in df1['pX']]
+y3=[i for i in df1['pY']]
+z3=[i for i in df1['Retro']]
+
 
 
 # fig = plt.figure()
