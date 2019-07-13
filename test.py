@@ -1,36 +1,80 @@
-from mpl_toolkits.mplot3d import Axes3D
+from mpl_toolkits.mplot3d import axes3d
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib import style
+import pandas as pd 
+import matplotlib.cm as cm
+import matplotlib.colors as colors
 
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-x, y = np.random.rand(2, 100) * 4
-x1, y1 = np.random.rand(2, 10) * 4
-hist, xedges, yedges = np.histogram2d(x, y, bins=4)
-hist1, xedges1, yedges1 = np.histogram2d(x1, y1, bins=4)
+matplotlib.use("TkAgg")
 
-elements = (len(xedges) - 1) * (len(yedges) - 1)
-elements1 = (len(xedges1) - 1) * (len(yedges1) - 1)
-xpos, ypos = np.meshgrid(xedges[:-1]+0.25, yedges[:-1]+0.25)
-xpos1, ypos1 = np.meshgrid(xedges1[:-1]+0.25, yedges1[:-1]+0.25)
-
-xpos = xpos.flatten()
-ypos = ypos.flatten()
-zpos = np.zeros(elements)
+import tkinter as tk
+from tkinter import ttk 
 
 
-xpos1 = xpos1.flatten()
-ypos1 = ypos1.flatten()
-zpos1 = np.zeros(elements)
 
-dx = 0.5 * np.ones_like(zpos)
-dy = dx.copy()
-dz = hist.flatten()
 
-ax.bar3d(xpos, ypos, zpos, dx, dy, dz, color='b', zsort='average')
-blue_proxy = plt.Rectangle((0, 0), 1, 1, fc="b")
-ax.bar3d(xpos1, ypos1, zpos1, dx, dy, dz, color='r', zsort='average')
-red_proxy = plt.Rectangle((0, 0), 1, 1, fc="r")
-ax.legend([blue_proxy,red_proxy],['cars','bikes'])
+LARGE_FONT=("Verdana",12)
+class SignAnalyzer(tk.Tk):
+    def __init__(self,*args,**kwargs):
+        tk.Tk.__init__(self,*args,**kwargs)
+        container=tk.Frame(self)
 
-plt.show()
+        container.pack(side="top",fill="both",expand=True)
+        container.grid_rowconfigure(0,weight=1)
+        container.grid_columnconfigure(0,weight=1)
+
+        self.frames={}
+        for F in (StartPage,PageOne,PageTwo):
+            frame = F(container,self)
+            self.frames[F]=frame
+            frame.grid(row=0,column=0,sticky="nsew")
+        
+        self.show_frame(StartPage)
+
+    def show_frame(self,cont):
+        frame=self.frames[cont]
+        frame.tkraise()
+def qf(param):
+    print(param)
+class StartPage(tk.Frame):
+    def __init__(self,parent,controller):
+        tk.Frame.__init__(self,parent)
+        label=tk.Label(self,text="GeorgiaTech LiDAR point based Sign Analyser",font=LARGE_FONT)
+        label.pack(pady=10,padx=10)
+
+        button1=ttk.Button(self,text="Bad Points", 
+        command=lambda: controller.show_frame(PageOne))
+
+        button1.pack()
+        button2=ttk.Button(self,text="Good Points", 
+        command=lambda: controller.show_frame(PageTwo))
+
+        button2.pack()
+
+class PageOne(tk.Frame):
+    def __init__(self,parent,controller):
+        tk.Frame.__init__(self,parent)
+        label=tk.Label(self,text="Bad Points on the sign",font=LARGE_FONT)
+        label.pack(pady=10,padx=10)
+
+        button1=ttk.Button(self,text="Back Home", 
+        command=lambda: controller.show_frame(StartPage))
+        button1.pack()
+class PageTwo(tk.Frame):
+    def __init__(self,parent,controller):
+        tk.Frame.__init__(self,parent)
+        label=tk.Label(self,text="Good Points",font=LARGE_FONT)
+        label.pack(pady=10,padx=10)
+
+        button1=ttk.Button(self,text="Back Home", 
+        command=lambda: controller.show_frame(StartPage))
+        button1.pack()
+
+        button2=ttk.Button(self,text="Bad Points", 
+        command=lambda: controller.show_frame(PageOne))
+        button2.pack()
+
+                
+app=SignAnalyzer()
+app.mainloop()

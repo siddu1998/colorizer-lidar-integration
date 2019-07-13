@@ -2,10 +2,14 @@
 Author : Sai Siddartha Maram
 email  : smaram_be16@thapar.edu , smaram7@gatech.edu
 
+
+
 Description : 
 The function takes a set of points stored in the csv file. These points correspond to LiDAR points
 reflected of the sign, task is to generate a 3D plot of the points and use the retrointensity to determine the color code of the points
 """ 
+from Tkinter import Label, Tk, Button, StringVar, Frame, Checkbutton, BooleanVar, Entry, IntVar, OptionMenu, Toplevel, \
+    Listbox, END, SINGLE,  ACTIVE
 
 
 from mpl_toolkits.mplot3d import axes3d
@@ -17,7 +21,7 @@ import matplotlib.cm as cm
 import matplotlib.colors as colors
 
 
-style.use('dark_background')
+style.use('fivethirtyeight')
 
 
 #load data frame of sign 
@@ -65,9 +69,11 @@ for i,row in df_sign.iterrows():
         dz_great_point.append(row['Retro'])
     
 
+#length and width of each bar
+dx=0.03
+dy=0.03
 
-dx=0.02
-dy=0.02
+#heights of each point category
 z3_very_poor=np.zeros(len(x3_very_poor))
 z3_average_point=np.zeros(len(x3_average_point))
 z3_above_average=np.zeros(len(x3_above_average_point))
@@ -76,33 +82,33 @@ z3_great_point=np.zeros(len(x3_great_point))
 fig = plt.figure()
 ax1 = fig.add_subplot(111, projection='3d')
 
-# if len(x3_great_point)>0:
-#     ax1.bar3d(x3_great_point, y3_great_point, z3, dx, dy, dz_great_point,color='g')
-# if len(x3_above_average_point)>0:
-#     ax1.bar3d(x3_average_point, y3_average_point, z3, dx, dy, dz_average_point,color='b')
-# if len(x3_very_poor)>0:
-#     ax1.bar3d(x3_very_poor, y3_very_poor, z3, dx, dy, dz_very_poor,color='r')
-
 if len(x3_great_point)>0:
-    ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color='g')
+    #color the point green
+    ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color=(0,1,0,0.6))
 else:
     pass
 if len(x3_average_point)>0:
-    ax1.bar3d(x3_average_point, y3_average_point,z3_average_point, dx, dy, dz_average_point,color='orange')
+    #color the point y
+    ax1.bar3d(x3_average_point, y3_average_point,z3_average_point, dx, dy, dz_average_point,color='y')
 else:
     pass
 if len(x3_very_poor)>0:
+    #color the point red
     ax1.bar3d(x3_very_poor, y3_very_poor, z3_very_poor, dx, dy, dz_very_poor,color='r')
 else:
     pass
 
 if len(x3_above_average_point)>0:
-    ax1.bar3d(x3_above_average_point, y3_above_average_point, z3_above_average, dx, dy,dz_above_average_point ,color='y')
+    #color the point orange
+    ax1.bar3d(x3_above_average_point, y3_above_average_point, z3_above_average, dx, dy,dz_above_average_point ,color=(0.6,0.3,0.0,0.6))
 else:
     pass
+
+
 
 ax1.set_xlabel('x')
 ax1.set_ylabel('y')
 ax1.set_zlabel('retro')
 ax1.set_zlim3d(0,1)
+
 plt.show()
