@@ -243,7 +243,6 @@ class PageTwo(tk.Frame):
             button7.pack()
         
         
-
         
 
         ax1.set_xlabel('x')

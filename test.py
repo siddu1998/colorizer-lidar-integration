@@ -17,16 +17,16 @@ from PIL import ImageTk, Image
 bins=[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]
 
 #load data frame of sign TODO: get this from the user argument
-df1 = pd.read_csv('signs_4.csv')
+df1 = pd.read_csv('signs_1.csv')
 #create df with only required 
 df_sign = df1[['SignId','pX','pY','Retro']]
 
-#less then 0.3
+#less then 0.4
 x3_very_poor=[]
 y3_very_poor=[]
 dz_very_poor=[]
 
-#between 0.31-0.5
+#between 0.4-0.5
 x3_average_point=[]
 y3_average_point=[]
 dz_average_point=[]
@@ -45,11 +45,11 @@ retro_master=[]
 
 for i,row in df_sign.iterrows():
     retro_master.append(row['Retro'])
-    if row['Retro']<0.3:
+    if row['Retro']<0.4:
         x3_very_poor.append(row['pX'])
         y3_very_poor.append(row['pY'])
         dz_very_poor.append(row['Retro'])
-    if 0.31<row['Retro']<0.5:
+    if 0.41<row['Retro']<0.5:
         x3_average_point.append(row['pX'])
         y3_average_point.append(row['pY'])
         dz_average_points.append(row['Retro'])
@@ -191,7 +191,7 @@ class PageTwo(tk.Frame):
 
         if len(x3_very_poor)>0:
             #color the point orange
-            ax1.bar3d(x3_very_poor, y3_very_poor, z3_very_poor, dx, dy,dz_very_poor,color='m')
+            ax1.bar3d(x3_very_poor, y3_very_poor, z3_very_poor, dx, dy,dz_very_poor,color='r')
         else:
             pass
         
