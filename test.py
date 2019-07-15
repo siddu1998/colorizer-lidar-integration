@@ -14,7 +14,7 @@ from tkinter import ttk
 from PIL import ImageTk, Image
 
 
-bins=[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]
+bins=[0,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1]
 
 #load data frame of sign TODO: get this from the user argument
 df1 = pd.read_csv('signs_1.csv')
@@ -145,13 +145,13 @@ class PageTwo(tk.Frame):
         button1.pack()
 
 
-        fig = Figure(figsize=(5,4), dpi=100)
+        fig = Figure(figsize=(5,5), dpi=100)
 
-        fig_2d = Figure(figsize=(6,1),dpi=50)
+        fig_2d = Figure(figsize=(1,1),dpi=100)
     
         canvas=FigureCanvasTkAgg(fig,self)
         canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=False)
+        canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
         # toolbar = NavigationToolbar2Tk(canvas, self)
         # toolbar.update()
@@ -234,10 +234,11 @@ class PageTwo(tk.Frame):
             button7=ttk.Button(self,text="Histograms",
             command=lambda: [
         
-            ax2.hist(dz_very_poor,bins,histtype='bar',color='r'),
-            ax2.hist(dz_great_point,bins,histtype='bar',color='g'),
-            ax2.hist(dz_average_point,bins,histtype='bar',color='y'),
-            ax2.hist(dz_above_average_point,bins,histtype='bar',color='m')
+            ax2.hist(dz_very_poor,bins=bins,histtype='bar',color='r'),
+            ax2.hist(dz_great_point,bins=bins,histtype='bar',color='g'),
+            ax2.hist(dz_average_point,bins=bins,histtype='bar',color='y'),
+            ax2.hist(dz_above_average_point,bins=bins,histtype='bar',color='m'),
+            fig_2d.canvas.flush_events()
             ]
             ) 
             button7.pack()
