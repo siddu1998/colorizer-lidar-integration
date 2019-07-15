@@ -30,4 +30,26 @@ def KMeansMethod(rows):
 		keep_rows = rows
 		keep_rows['flag'] = [1 for i in range(len(keep_rows))]
 	return keep_rows
+def DBSCANMethod(rows):
+	"""
+	Uses the DBSCAN algorithm to cluster the points and remove outliers.
+
+	Params:
+	--------------
+		rows: pandas dataframe containing the rows that belong to a particular sign
+
+	Returns:
+	--------------
+		keep_rows: a subset of rows to keep
+
+	"""
+	pts = rows[["x_cart", "y_cart", "z_cart"]].values
+
+	dbscan = DBSCAN(eps = DBSCAN_EPS, min_samples = HITCOUNT, metric = 'l1')
+	dbscan.fit(pts)
+
+	keep_indices = (dbscan.labels_ != -1) # noisy samples are labelled -1
+	keep_rows = rows[keep_indices]
+
+	return keep_rows
 

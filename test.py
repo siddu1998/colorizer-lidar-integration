@@ -11,6 +11,10 @@ matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg,NavigationToolbar2Tk
 import tkinter as tk
 from tkinter import ttk 
+from PIL import ImageTk, Image
+
+
+bins=[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]
 
 #load data frame of sign TODO: get this from the user argument
 df1 = pd.read_csv('signs_4.csv')
@@ -37,12 +41,14 @@ x3_great_point=[]
 y3_great_point=[]
 dz_great_point=[]
 
+retro_master=[]
 
 for i,row in df_sign.iterrows():
+    retro_master.append(row['Retro'])
     if row['Retro']<0.3:
-        x3_very_poor.add(row['pX'])
-        y3_very_poor.add(row['pY'])
-        dz_very_poor.add(row['Retro'])
+        x3_very_poor.append(row['pX'])
+        y3_very_poor.append(row['pY'])
+        dz_very_poor.append(row['Retro'])
     if 0.31<row['Retro']<0.5:
         x3_average_point.append(row['pX'])
         y3_average_point.append(row['pY'])
@@ -69,6 +75,19 @@ z3_great_point=np.zeros(len(x3_great_point))
 
 LARGE_FONT=("Verdana",12)
 
+def DBSCANMethod(rows):
+	pts = rows[["x_cart", "y_cart", "z_cart"]].values
+
+	dbscan = DBSCAN(eps = DBSCAN_EPS, min_samples = HITCOUNT, metric = 'l1')
+	dbscan.fit(pts)
+
+	keep_indices = (dbscan.labels_ != -1) # noisy samples are labelled -1
+	keep_rows = rows[keep_indices]
+
+	return keep_rows
+
+
+
 class SignAnalyzer(tk.Tk):
     def __init__(self,*args,**kwargs):
         tk.Tk.__init__(self,*args,**kwargs)
@@ -94,9 +113,12 @@ class SignAnalyzer(tk.Tk):
 class StartPage(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
-        label=tk.Label(self,text="GeorgiaTech LiDAR point based Sign Analyser",font=LARGE_FONT)
+        label=tk.Label(self,text="LiDAR point based Sign Analyser",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
-
+        label1=tk.Label(self,text="Welcome to Sign Analyser, This tool is use to visualize signs and generate analysis of the signs captured by LiDAR points")
+        label1.pack(pady=10,padx=10)
+        
+        
         
         button2=ttk.Button(self,text="Plot Sign", 
         command=lambda: controller.show_frame(PageTwo))
@@ -124,17 +146,32 @@ class PageTwo(tk.Frame):
 
 
         fig = Figure(figsize=(5,4), dpi=100)
+
+        fig_2d = Figure(figsize=(4,2),dpi=50)
+    
         canvas=FigureCanvasTkAgg(fig,self)
         canvas.draw()
         canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
-        toolbar = NavigationToolbar2Tk(canvas, self)
+
+        # toolbar = NavigationToolbar2Tk(canvas, self)
+        # toolbar.update()
+        # canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+        canvas_2d=FigureCanvasTkAgg(fig_2d,self)
+        canvas_2d.draw()
+        canvas_2d.get_tk_widget().pack(side=tk.BOTTOM,fill=tk.BOTH,expand=True)
+
+        toolbar = NavigationToolbar2Tk(canvas_2d, self)
         toolbar.update()
-        canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        canvas_2d._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
 
 
         ax1 = fig.add_subplot(111, projection='3d')
- 
+        print(type(ax1))
+        ax2 = fig_2d.add_subplot(111)
+        print(type(ax2))
+
         if len(x3_great_point)>0:
             #color the point green
             ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color='g')
@@ -157,6 +194,7 @@ class PageTwo(tk.Frame):
             ax1.bar3d(x3_very_poor, y3_very_poor, z3_very_poor, dx, dy,dz_very_poor,color='m')
         else:
             pass
+        
 
 
         if(len(x3_great_point)>0):
@@ -191,6 +229,20 @@ class PageTwo(tk.Frame):
             ]
             ) 
             button6.pack()
+        if(len(retro_master)>0):
+            print(len(retro_master))
+            button7=ttk.Button(self,text="Histograms",
+            command=lambda: [
+            ax2.clear(),
+            ax2.hist(dz_great_point,bins,histtype='bar',color='g')
+            
+            ]
+            ) 
+            button7.pack()
+        
+        
+
+        
 
         ax1.set_xlabel('x')
         ax1.set_ylabel('y')
