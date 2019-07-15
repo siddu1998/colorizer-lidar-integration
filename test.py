@@ -147,19 +147,19 @@ class PageTwo(tk.Frame):
 
         fig = Figure(figsize=(5,4), dpi=100)
 
-        fig_2d = Figure(figsize=(4,2),dpi=50)
+        fig_2d = Figure(figsize=(6,1),dpi=50)
     
         canvas=FigureCanvasTkAgg(fig,self)
         canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+        canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=False)
 
         # toolbar = NavigationToolbar2Tk(canvas, self)
         # toolbar.update()
-        # canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        # canvas._tkcanvas.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
         canvas_2d=FigureCanvasTkAgg(fig_2d,self)
         canvas_2d.draw()
-        canvas_2d.get_tk_widget().pack(side=tk.BOTTOM,fill=tk.BOTH,expand=True)
+        canvas_2d.get_tk_widget().pack(side=tk.LEFT,fill=tk.BOTH,expand=True)
 
         toolbar = NavigationToolbar2Tk(canvas_2d, self)
         toolbar.update()
@@ -233,9 +233,11 @@ class PageTwo(tk.Frame):
             print(len(retro_master))
             button7=ttk.Button(self,text="Histograms",
             command=lambda: [
-            ax2.clear(),
-            ax2.hist(dz_great_point,bins,histtype='bar',color='g')
-            
+        
+            ax2.hist(dz_very_poor,bins,histtype='bar',color='r'),
+            ax2.hist(dz_great_point,bins,histtype='bar',color='g'),
+            ax2.hist(dz_average_point,bins,histtype='bar',color='y'),
+            ax2.hist(dz_above_average_point,bins,histtype='bar',color='m')
             ]
             ) 
             button7.pack()
