@@ -19,7 +19,10 @@ bins=[0,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,
 #load data frame of sign TODO: get this from the user argument
 df1 = pd.read_csv('signs_1.csv')
 #create df with only required 
-df_sign = df1[['SignId','pX','pY','Retro']]
+df_sign = df1[['SignId','pX','pY','Retro','COLOR']]
+
+
+
 
 #less then 0.4
 x3_very_poor=[]
@@ -174,24 +177,24 @@ class PageTwo(tk.Frame):
 
         if len(x3_great_point)>0:
             #color the point green
-            ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color='g')
+            ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color='g',alpha=0.5)
         else:
             pass
         if len(x3_average_point)>0:
             #color the point y
-            ax1.bar3d(x3_average_point, y3_average_point,z3_average_point, dx, dy, dz_average_point,color='y')
+            ax1.bar3d(x3_average_point, y3_average_point,z3_average_point, dx, dy, dz_average_point,color='y',alpha=0.5)
         else:
             pass
 
         if len(x3_above_average_point)>0:
             #color the point orange
-            ax1.bar3d(x3_above_average_point, y3_above_average_point, z3_above_average, dx, dy,dz_above_average_point ,color='m')
+            ax1.bar3d(x3_above_average_point, y3_above_average_point, z3_above_average, dx, dy,dz_above_average_point ,color='m',alpha=0.5)
         else:
             pass
 
         if len(x3_very_poor)>0:
             #color the point orange
-            ax1.bar3d(x3_very_poor, y3_very_poor, z3_very_poor, dx, dy,dz_very_poor,color='r')
+            ax1.bar3d(x3_very_poor, y3_very_poor, z3_very_poor, dx, dy,dz_very_poor,color='r',alpha=0.5)
         else:
             pass
         
@@ -201,7 +204,7 @@ class PageTwo(tk.Frame):
             button3=ttk.Button(self,text="Only Good Points",
             command=lambda: [
             ax1.clear(),
-            ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color='g')
+            ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color='g',alpha=0.5)
             ]
             ) 
             button3.pack()
@@ -209,7 +212,7 @@ class PageTwo(tk.Frame):
             button4=ttk.Button(self,text="Only Poor Points",
             command=lambda: [
             ax1.clear(),
-            ax1.bar3d(x3_very_poor, y3_very_poor,z3_very_poor, dx, dy, dz_very_poor,color='r')
+            ax1.bar3d(x3_very_poor, y3_very_poor,z3_very_poor, dx, dy, dz_very_poor,color='r',alpha=0.5)
             ]
             ) 
             button4.pack()
@@ -217,7 +220,7 @@ class PageTwo(tk.Frame):
             button5=ttk.Button(self,text="Only Above averge points",
             command=lambda: [
             ax1.clear(),
-            ax1.bar3d(x3_above_average_point, y3_above_average_point,z3_above_average, dx, dy, dz_above_average_point,color='m')
+            ax1.bar3d(x3_above_average_point, y3_above_average_point,z3_above_average, dx, dy, dz_above_average_point,color='m',alpha=0.5)
             ]
             ) 
             button5.pack()
@@ -225,7 +228,7 @@ class PageTwo(tk.Frame):
             button6=ttk.Button(self,text="Only average point",
             command=lambda: [
             ax1.clear(),
-            ax1.bar3d(x3_average_point, y3_average_point,z3_average_point, dx, dy, dz_average_point,color='b')
+            ax1.bar3d(x3_average_point, y3_average_point,z3_average_point, dx, dy, dz_average_point,color='b',alpha=0.5)
             ]
             ) 
             button6.pack()
