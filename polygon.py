@@ -19,7 +19,7 @@ from matplotlib._png import read_png
 from pylab import *
 
 #load data frame of sign TODO: get this from the user argument
-df1 = pd.read_csv('signs_2.csv')
+df1 = pd.read_csv('signs_4.csv')
 #create df with only required 
 df_sign = df1[['SignId','pX','pY','Retro','COLOR']]
 dz=0
@@ -80,7 +80,7 @@ else:
 
 plt.xlabel('x')
 plt.ylabel('y')
-plt.title('Sign 13 (Do Not Enter!)')
-plt.legend()
+plt.title('Sign 1 (Full White Stop Sign)')
+#plt.legend()
 plt.show()
     

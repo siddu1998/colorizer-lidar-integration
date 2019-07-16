@@ -12,12 +12,14 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg,NavigationToolba
 import tkinter as tk
 from tkinter import ttk 
 from PIL import ImageTk, Image
+import statistics 
+
 
 
 bins=[0,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1]
 
 #load data frame of sign TODO: get this from the user argument
-df1 = pd.read_csv('signs_1.csv')
+df1 = pd.read_csv('signs_4.csv')
 #create df with only required 
 df_sign = df1[['SignId','pX','pY','Retro','COLOR']]
 
@@ -69,6 +71,8 @@ for i,row in df_sign.iterrows():
 #length and width of each bar
 dx=0.03
 dy=0.03
+print(statistics.median(retro_master))
+print(statistics.stdev(retro_master))
 
 #heights of each point category
 z3_very_poor=np.zeros(len(x3_very_poor))
@@ -255,6 +259,7 @@ class PageTwo(tk.Frame):
         ax1.set_zlabel('retro')
         ax1.set_zlim3d(0,1)
 
-                
+
+
 app=SignAnalyzer()
 app.mainloop()
