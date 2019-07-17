@@ -12,20 +12,18 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg,NavigationToolba
 import tkinter as tk
 from tkinter import ttk 
 from PIL import ImageTk, Image
-import statistics 
+import statistics
 
 
-
-bins=[0,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1]
+bins=[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]
 
 #load data frame of sign TODO: get this from the user argument
-df1 = pd.read_csv('signs_1.csv')
+df1 = pd.read_csv('signs.csv')
 #create df with only required 
-df_sign = df1[['SignId','pX','pY','Retro','COLOR']]
 
-
-
-
+df1 = df1[['SignId','pX','pY','Retro']]
+df1 = df1.groupby('SignId')
+df1 = df1.get_group(int(input()))
 #less then 0.4
 x3_very_poor=[]
 y3_very_poor=[]
@@ -48,7 +46,7 @@ dz_great_point=[]
 
 retro_master=[]
 
-for i,row in df_sign.iterrows():
+for i,row in df1.iterrows():
     retro_master.append(row['Retro'])
     if row['Retro']<0.4:
         x3_very_poor.append(row['pX'])
@@ -71,8 +69,6 @@ for i,row in df_sign.iterrows():
 #length and width of each bar
 dx=0.03
 dy=0.03
-median=statistics.median(retro_master)
-sd=statistics.stdev(retro_master)
 
 #heights of each point category
 z3_very_poor=np.zeros(len(x3_very_poor))
@@ -141,30 +137,30 @@ class PageOne(tk.Frame):
         button1=ttk.Button(self,text="Back Home", 
         command=lambda: controller.show_frame(StartPage))
         button1.pack()
+
+
+
+
+
+
 class PageTwo(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
         label=tk.Label(self,text="Visalizer",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
-        
-        median_label=tk.Label(self,text="Median: {}".format(str(median)),font=LARGE_FONT)
-        median_label.pack(pady=10,padx=10)
-
-        sd_label=tk.Label(self,text="Standard Deviaion: {}".format(str(sd)),font=LARGE_FONT)
-        sd_label.pack(pady=10,padx=10)
-        
 
         button1=ttk.Button(self,text="Go back to Homepage", 
         command=lambda: controller.show_frame(StartPage))
         button1.pack()
 
-        fig = Figure(figsize=(5,5), dpi=100)
 
-        fig_2d = Figure(figsize=(1,1),dpi=100)
+        fig = Figure(figsize=(5,4), dpi=100)
+
+        fig_2d = Figure(figsize=(6,1),dpi=50)
     
         canvas=FigureCanvasTkAgg(fig,self)
         canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+        canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=False)
 
         # toolbar = NavigationToolbar2Tk(canvas, self)
         # toolbar.update()
@@ -178,33 +174,40 @@ class PageTwo(tk.Frame):
         toolbar.update()
         canvas_2d._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
+        median=statistics.median(retro_master)
+        standard_deviation=statistics.stdev(retro_master)
 
+        median_label=tk.Label(self,text="Median:{}".format(median),font=LARGE_FONT)
+        median_label.pack(pady=10,padx=10)
+        
+        sd_label=tk.Label(self,text="Standard Deviation:{}".format(standard_deviation),font=LARGE_FONT)
+        sd_label.pack(pady=10,padx=10)
 
         ax1 = fig.add_subplot(111, projection='3d')
-        #print(type(ax1))
+        print(type(ax1))
         ax2 = fig_2d.add_subplot(111)
-        #print(type(ax2))
+        print(type(ax2))
 
         if len(x3_great_point)>0:
             #color the point green
-            ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color='g',alpha=0.5)
+            ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color='g')
         else:
             pass
         if len(x3_average_point)>0:
             #color the point y
-            ax1.bar3d(x3_average_point, y3_average_point,z3_average_point, dx, dy, dz_average_point,color='y',alpha=0.5)
+            ax1.bar3d(x3_average_point, y3_average_point,z3_average_point, dx, dy, dz_average_point,color='y')
         else:
             pass
 
         if len(x3_above_average_point)>0:
             #color the point orange
-            ax1.bar3d(x3_above_average_point, y3_above_average_point, z3_above_average, dx, dy,dz_above_average_point ,color='m',alpha=0.5)
+            ax1.bar3d(x3_above_average_point, y3_above_average_point, z3_above_average, dx, dy,dz_above_average_point ,color='m')
         else:
             pass
 
         if len(x3_very_poor)>0:
             #color the point orange
-            ax1.bar3d(x3_very_poor, y3_very_poor, z3_very_poor, dx, dy,dz_very_poor,color='r',alpha=0.5)
+            ax1.bar3d(x3_very_poor, y3_very_poor, z3_very_poor, dx, dy,dz_very_poor,color='r')
         else:
             pass
         
@@ -214,7 +217,7 @@ class PageTwo(tk.Frame):
             button3=ttk.Button(self,text="Only Good Points",
             command=lambda: [
             ax1.clear(),
-            ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color='g',alpha=0.5)
+            ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color='g')
             ]
             ) 
             button3.pack()
@@ -222,7 +225,7 @@ class PageTwo(tk.Frame):
             button4=ttk.Button(self,text="Only Poor Points",
             command=lambda: [
             ax1.clear(),
-            ax1.bar3d(x3_very_poor, y3_very_poor,z3_very_poor, dx, dy, dz_very_poor,color='r',alpha=0.5)
+            ax1.bar3d(x3_very_poor, y3_very_poor,z3_very_poor, dx, dy, dz_very_poor,color='r')
             ]
             ) 
             button4.pack()
@@ -230,7 +233,7 @@ class PageTwo(tk.Frame):
             button5=ttk.Button(self,text="Only Above averge points",
             command=lambda: [
             ax1.clear(),
-            ax1.bar3d(x3_above_average_point, y3_above_average_point,z3_above_average, dx, dy, dz_above_average_point,color='m',alpha=0.5)
+            ax1.bar3d(x3_above_average_point, y3_above_average_point,z3_above_average, dx, dy, dz_above_average_point,color='m')
             ]
             ) 
             button5.pack()
@@ -238,7 +241,7 @@ class PageTwo(tk.Frame):
             button6=ttk.Button(self,text="Only average point",
             command=lambda: [
             ax1.clear(),
-            ax1.bar3d(x3_average_point, y3_average_point,z3_average_point, dx, dy, dz_average_point,color='b',alpha=0.5)
+            ax1.bar3d(x3_average_point, y3_average_point,z3_average_point, dx, dy, dz_average_point,color='b')
             ]
             ) 
             button6.pack()
@@ -247,11 +250,10 @@ class PageTwo(tk.Frame):
             button7=ttk.Button(self,text="Histograms",
             command=lambda: [
         
-            ax2.hist(dz_very_poor,bins=bins,histtype='bar',color='r'),
-            ax2.hist(dz_great_point,bins=bins,histtype='bar',color='g'),
-            ax2.hist(dz_average_point,bins=bins,histtype='bar',color='y'),
-            ax2.hist(dz_above_average_point,bins=bins,histtype='bar',color='m'),
-            fig_2d.canvas.flush_events()
+            ax2.hist(dz_very_poor,bins,histtype='bar',color='r'),
+            ax2.hist(dz_great_point,bins,histtype='bar',color='g'),
+            ax2.hist(dz_average_point,bins,histtype='bar',color='y'),
+            ax2.hist(dz_above_average_point,bins,histtype='bar',color='m')
             ]
             ) 
             button7.pack()
@@ -265,7 +267,6 @@ class PageTwo(tk.Frame):
         ax1.set_zlabel('retro')
         ax1.set_zlim3d(0,1)
 
-
-
+                
 app=SignAnalyzer()
 app.mainloop()
