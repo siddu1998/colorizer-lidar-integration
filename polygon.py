@@ -19,7 +19,7 @@ from matplotlib._png import read_png
 from pylab import *
 
 #load data frame of sign TODO: get this from the user argument
-df1 = pd.read_csv('signs_4.csv')
+df1 = pd.read_csv('signs_2.csv')
 #create df with only required 
 df_sign = df1[['SignId','pX','pY','Retro','COLOR']]
 dz=0

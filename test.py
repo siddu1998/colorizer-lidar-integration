@@ -19,7 +19,7 @@ import statistics
 bins=[0,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1]
 
 #load data frame of sign TODO: get this from the user argument
-df1 = pd.read_csv('signs_4.csv')
+df1 = pd.read_csv('signs_1.csv')
 #create df with only required 
 df_sign = df1[['SignId','pX','pY','Retro','COLOR']]
 
@@ -71,8 +71,8 @@ for i,row in df_sign.iterrows():
 #length and width of each bar
 dx=0.03
 dy=0.03
-print(statistics.median(retro_master))
-print(statistics.stdev(retro_master))
+median=statistics.median(retro_master)
+sd=statistics.stdev(retro_master)
 
 #heights of each point category
 z3_very_poor=np.zeros(len(x3_very_poor))
@@ -146,11 +146,17 @@ class PageTwo(tk.Frame):
         tk.Frame.__init__(self,parent)
         label=tk.Label(self,text="Visalizer",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
+        
+        median_label=tk.Label(self,text="Median: {}".format(str(median)),font=LARGE_FONT)
+        median_label.pack(pady=10,padx=10)
+
+        sd_label=tk.Label(self,text="Standard Deviaion: {}".format(str(sd)),font=LARGE_FONT)
+        sd_label.pack(pady=10,padx=10)
+        
 
         button1=ttk.Button(self,text="Go back to Homepage", 
         command=lambda: controller.show_frame(StartPage))
         button1.pack()
-
 
         fig = Figure(figsize=(5,5), dpi=100)
 
@@ -175,9 +181,9 @@ class PageTwo(tk.Frame):
 
 
         ax1 = fig.add_subplot(111, projection='3d')
-        print(type(ax1))
+        #print(type(ax1))
         ax2 = fig_2d.add_subplot(111)
-        print(type(ax2))
+        #print(type(ax2))
 
         if len(x3_great_point)>0:
             #color the point green
