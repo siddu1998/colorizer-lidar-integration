@@ -31,7 +31,8 @@ dz_red_signs=[]
 white_signs_x=[]
 white_signs_y=[]
 dz_white_signs=[]
-
+def onclick(event):
+    print(event.xdata, event.ydata)
 
 for i,row in df_sign.iterrows():
 
@@ -78,9 +79,11 @@ if(len(white_signs_x)>0):
 else:
     print("[INFO] No white points in this sign")
 
-plt.xlabel('x')
-plt.ylabel('y')
-plt.title('Sign 1 (Full White Stop Sign)')
-#plt.legend()
+# plt.xlabel('x')
+# plt.ylabel('y')
+# plt.title('Sign 1 (Full White Stop Sign)')
+# #plt.legend()
+# plt.show()
+fig= plt.subplots()
+fig.canvas.mpl_connect('button_press_event', onclick)
 plt.show()
-    

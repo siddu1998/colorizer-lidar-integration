@@ -1,3 +1,18 @@
+"""
+################################################
+Author : Sai Siddartha Maram    (msaisiddartha1@gmail.com)
+Data   : July 2019
+Summary: An application to visualize 3D LiDAR data and generate statistical insights about it and recommend the 
+         apt replacement strategy
+###############################################
+
+
+
+"""
+
+
+
+
 from mpl_toolkits.mplot3d import axes3d
 import matplotlib.pyplot as plt
 import numpy as np
@@ -23,7 +38,7 @@ df1 = pd.read_csv('signs.csv')
 
 df1 = df1[['SignId','pX','pY','Retro']]
 df1 = df1.groupby('SignId')
-df1 = df1.get_group(int(input()))
+df1 = df1.get_group(int(input("Please enter the sign you want to plot")))
 #less then 0.4
 x3_very_poor=[]
 y3_very_poor=[]
@@ -78,16 +93,6 @@ z3_great_point=np.zeros(len(x3_great_point))
 
 LARGE_FONT=("Verdana",12)
 
-def DBSCANMethod(rows):
-	pts = rows[["x_cart", "y_cart", "z_cart"]].values
-
-	dbscan = DBSCAN(eps = DBSCAN_EPS, min_samples = HITCOUNT, metric = 'l1')
-	dbscan.fit(pts)
-
-	keep_indices = (dbscan.labels_ != -1) # noisy samples are labelled -1
-	keep_rows = rows[keep_indices]
-
-	return keep_rows
 
 
 
@@ -179,9 +184,16 @@ class PageTwo(tk.Frame):
 
         median_label=tk.Label(self,text="Median:{}".format(median),font=LARGE_FONT)
         median_label.pack(pady=10,padx=10)
+        if median>0.7:
+            classification_status='Good Sign No change neeed'
+        if median<0.69:
+            classification_status='Poor Sign as per retro Standards, Please consided changing the sign'
         
         sd_label=tk.Label(self,text="Standard Deviation:{}".format(standard_deviation),font=LARGE_FONT)
         sd_label.pack(pady=10,padx=10)
+
+        classification_label=tk.Label(self,text="Classification Status {}".format(classification_status),font=LARGE_FONT)
+        classification_label.pack(pady=10,padx=10)
 
         ax1 = fig.add_subplot(111, projection='3d')
         print(type(ax1))
