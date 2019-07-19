@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 plt.style.use('dark_background')
 import statistics
+import csv
 
 class SelectFromCollection(object):
 
@@ -48,7 +49,7 @@ all_selected=[]
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
    
-    df1 = pd.read_csv('signs_13.csv')
+    df1 = pd.read_csv('signs_4.csv')
     #create df with only required 
     df_sign = df1[['SignId','pX','pY','Retro','COLOR']]
 
@@ -74,16 +75,15 @@ if __name__ == '__main__':
     subplot_kw = dict(xlim=(0, 1), ylim=(0, 1), autoscale_on=False)
     bins=[0,0.1,0.2,0.3,0.4,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,1]
     print(len(dz))
-    #print(dz)
+
     fig, ax = plt.subplots(subplot_kw=subplot_kw)
-    fig2, ax2= plt.subplots(1)
     
     
     
-    ax2.hist(dz,bins,histtype='bar',color='w')
+    
     pts = ax.scatter(red_signs_x, red_signs_y, color='r',s=80)
     pts_1 = ax.scatter(white_signs_x, white_signs_y, color='grey',s=80)
-    pts_hist = ax2.hist(dz,histtype='bar',color='w')
+    
     selector = SelectFromCollection(ax, pts)
     selector_1=SelectFromCollection(ax,pts_1)
 
@@ -98,22 +98,33 @@ if __name__ == '__main__':
             all_points_selected=[]
 
             for point in red_points_selected[0]:
+                
                 row_red=df_sign.loc[(df_sign['pX'] == point[0]) & (df_sign['pY'] == point[1])]
-                red_retro_points.append(row_red['Retro'])
+                print("---------------------")
+                print(type(row_red['SignId']))
+                print(int(row_red['SignId']))
+                print(float(row_red['Retro']))
+                print('-------------------')
+                red_retro_points.append([int(row_red['SignId']),float(row_red['pX']),float(row_red['pY']),float(row_red['Retro'])])
                
             for point in white_points_selected[0]:
                 row_white=(df_sign.loc[(df_sign['pX'] == point[0]) & (df_sign['pY'] == point[1])])
-                white_retro_points.append(row_white['Retro'])
+                white_retro_points.append([int(row_white['SignId']),float(row_white['pX']),float(row_white['pY']),float(row_white['Retro'])])
             
-            all_selected=red_retro_points+white_retro_points
             
+            
+     
+            df_white= pd.DataFrame(white_retro_points, columns=["SignId","pX","pY","Retro"])
+            df_white.to_csv('white_retro_points.csv', index=True)
+
+            df_red=pd.DataFrame(red_retro_points,columns=["SignId","pX","pY","Retro"])
+            df_red.to_csv('red_retro_points.csv',index=True)
             
             print("[INFO] You have selected {} red and {} white points".format(len(red_retro_points),len(white_retro_points)))
             print(len(all_selected))
             selector.disconnect()
             selector_1.disconnect()
             ax.set_title("")
-            ax2.clear()
             fig.canvas.draw()
     
     fig.canvas.mpl_connect("key_press_event", accept)

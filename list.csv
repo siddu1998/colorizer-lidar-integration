@@ -1,0 +1,5 @@
+SignId,pX,pY,Retro
+"Series([], Name: SignId, dtype: int64)","50    0.716
+Name: pX, dtype: float64","50    0.577
+Name: pY, dtype: float64","50    0.78
+Name: Retro, dtype: float64"
