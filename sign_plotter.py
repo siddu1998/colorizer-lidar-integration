@@ -234,10 +234,11 @@ class PageTwo(tk.Frame):
             button7=ttk.Button(self,text="Histograms",
             command=lambda: [
         
-            ax2.hist(dz_very_poor,bins,histtype='bar',color='r'),
-            ax2.hist(dz_great_point,bins,histtype='bar',color='g'),
-            ax2.hist(dz_average_point,bins,histtype='bar',color='y'),
-            ax2.hist(dz_above_average_point,bins,histtype='bar',color='m')
+            # ax2.hist(dz_very_poor,bins,histtype='bar',color='r'),
+            # ax2.hist(dz_great_point,bins,histtype='bar',color='g'),
+            # ax2.hist(dz_average_point,bins,histtype='bar',color='y'),
+            # ax2.hist(dz_above_average_point,bins,histtype='bar',color='m')
+            ax2.hist(retro_master,bins=[0,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95,1],histtype='bar'),
             ]
             ) 
             button7.pack()
