@@ -4,8 +4,9 @@ from matplotlib.widgets import LassoSelector
 from matplotlib.path import Path
 import pandas as pd
 import matplotlib.pyplot as plt
-
+from matplotlib.figure import Figure
 plt.style.use('dark_background')
+import statistics
 
 class SelectFromCollection(object):
 
@@ -30,6 +31,7 @@ class SelectFromCollection(object):
     def onselect(self, verts):
         path = Path(verts)
         self.ind = np.nonzero(path.contains_points(self.xys))[0]
+        
         self.fc[:, -1] = self.alpha_other
         self.fc[self.ind, -1] = 1
         self.collection.set_facecolors(self.fc)
@@ -40,6 +42,18 @@ class SelectFromCollection(object):
         self.fc[:, -1] = 1
         self.collection.set_facecolors(self.fc)
         self.canvas.draw_idle()
+
+def draw_histograms(red_retro_points,white_retro_points):
+    print(len(red_retro_points))
+    print(len(white_retro_points))
+    
+    print("Median Red points",statistics.median(red_retro_points))
+    print("SD red points",statistics.stdev(red_retro_selected))
+    
+    print("Median White points",statistics.median(white_retro_points))
+    print("SD white Points",statistics.stdev(red_retro_points))
+
+
 
 
 if __name__ == '__main__':
@@ -76,15 +90,27 @@ if __name__ == '__main__':
     selector_1=SelectFromCollection(ax,pts_1)
     def accept(event):
         if event.key == "enter":
-            print("Selected points:")
-            print(selector.xys[selector.ind])
-            print(selector_1.xys[selector_1.ind])
+            
+            red_points_selected=[selector.xys[selector.ind]]
+            white_points_selected=[selector_1.xys[selector_1.ind]]
+            red_retro_points=[]
+            white_retro_points=[]
+
+            for point in red_points_selected[0]:
+                row_red=df_sign.loc[(df_sign['pX'] == point[0]) & (df_sign['pY'] == point[1])]
+                red_retro_points.append(row_red['Retro'])
+               
+            for point in white_points_selected[0]:
+                row_white=(df_sign.loc[(df_sign['pX'] == point[0]) & (df_sign['pY'] == point[1])])
+                white_retro_points.append(row_white['Retro'])
+            print("[INFO] You have selected {} red and {} white points".format(len(red_retro_points),len(white_retro_points)))
             selector.disconnect()
             selector_1.disconnect()
             ax.set_title("")
             fig.canvas.draw()
+            draw_histograms(red_retro_points,white_retro_points)
 
     fig.canvas.mpl_connect("key_press_event", accept)
-    ax.set_title("Press enter to accept selected points.")
+    ax.set_title("Retro Polygon tool")
 
     plt.show()
