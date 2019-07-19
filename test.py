@@ -6,7 +6,11 @@ Summary: An application to visualize 3D LiDAR data and generate statistical insi
          apt replacement strategy
 ###############################################
 
-
+Description 
+-------------------
+Filters signs based on the sign id and associates each LiDAR point with the corresponding normalized retro intensity values.
+Then plots 3D bar charts and histograms and classifies each point broadly into 4 classes based on their retro-intensity values.
+Post whicjh
 
 """
 

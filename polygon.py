@@ -84,6 +84,7 @@ else:
 # plt.title('Sign 1 (Full White Stop Sign)')
 # #plt.legend()
 # plt.show()
-fig= plt.subplots()
+fig,ax = plt.subplots()
+ax.plot()
 fig.canvas.mpl_connect('button_press_event', onclick)
 plt.show()
