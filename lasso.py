@@ -43,11 +43,6 @@ class SelectFromCollection(object):
         self.collection.set_facecolors(self.fc)
         self.canvas.draw_idle()
 
-def draw_histograms(all_selected):
-    figure,ax_10=plt.subplots(1)
-    ax_10.hist(all_selected,histtype='bar',color='green')
-    plt.show()
-
 all_selected=[]
 
 if __name__ == '__main__':
@@ -82,14 +77,16 @@ if __name__ == '__main__':
     #print(dz)
     fig, ax = plt.subplots(subplot_kw=subplot_kw)
     fig2, ax2= plt.subplots(1)
-    fig3,ax3=plt.subplots(1)
+    
     
     
     ax2.hist(dz,bins,histtype='bar',color='w')
     pts = ax.scatter(red_signs_x, red_signs_y, color='r',s=80)
     pts_1 = ax.scatter(white_signs_x, white_signs_y, color='grey',s=80)
+    pts_hist = ax2.hist(dz,histtype='bar',color='w')
     selector = SelectFromCollection(ax, pts)
     selector_1=SelectFromCollection(ax,pts_1)
+
     
     def accept(event):
         if event.key == "enter":
@@ -116,12 +113,9 @@ if __name__ == '__main__':
             selector.disconnect()
             selector_1.disconnect()
             ax.set_title("")
-            draw_histograms(all_selected)
+            ax2.clear()
             fig.canvas.draw()
-            #fig2.canvas.draw()
-            
-            #draw_histograms(red_retro_points,white_retro_points)
-
+    
     fig.canvas.mpl_connect("key_press_event", accept)
     ax.set_title("Retro Polygon tool")
    
