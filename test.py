@@ -147,23 +147,21 @@ class PageOne(tk.Frame):
         command=lambda: controller.show_frame(StartPage))
         button1.pack()
 
-user_pX=[]
-user_pY=[]
-user_dZ=[]
 
 
-def updated_graph_points(df):
-    
-    
+def updated_graph_points(df,value_title):
 
     print(len(df['Retro']))
     print(len(df['pX']))
     print(len(df['pY']))
+
+
     fig = plt.figure()
     ax_pop = fig.add_subplot(111, projection='3d')
     dx=0.03
     dy=0.03
     ax_pop.bar3d(df['pX'],df['pY'], 0, dx, dy, df['Retro'])
+    plt.title('This contains all signs below {}'.format(value_title))
     plt.show()
 
 
@@ -304,8 +302,8 @@ class PageTwo(tk.Frame):
 
         button_to_plot_entered_value=ttk.Button(self,text="Plot points below entered value", 
         command=lambda: [
-        updated_graph_points(df1.loc[(df1['Retro'] <= float(bin_value_to_show_points.get()))])
-
+        updated_graph_points(df1.loc[(df1['Retro'] <= float(bin_value_to_show_points.get()))],bin_value_to_show_points.get())
+        
                         ]
         
         )
