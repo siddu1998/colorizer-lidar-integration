@@ -149,8 +149,9 @@ class PageOne(tk.Frame):
         button1.pack()
 
 def run_lasso():
-    os.system('python3 lasso.py')
-    os.system('python3 laso_plotter.py')
+    os.system('python lasso.py')
+    os.system('python laso_plotter.py')
+    return
 
 
 def updated_graph_points(df,value_title):
@@ -174,7 +175,7 @@ class PageTwo(tk.Frame):
 
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
-        label=tk.Label(self,text="Visalizer",font=LARGE_FONT)
+        label=tk.Label(self,text="Visualizer",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
 
         button1=ttk.Button(self,text="Go back to Homepage", 
