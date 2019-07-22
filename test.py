@@ -16,7 +16,7 @@ Post whicjh
 
 
 
-
+import os
 from mpl_toolkits.mplot3d import axes3d
 import matplotlib.pyplot as plt
 import numpy as np
@@ -42,7 +42,8 @@ df1 = pd.read_csv('signs.csv')
 
 df1 = df1[['SignId','pX','pY','Retro']]
 df1 = df1.groupby('SignId')
-df1 = df1.get_group(int(input("Please enter the sign you want to plot")))
+sign=int(input("Please enter the sign you want to plot"))
+df1 = df1.get_group(sign)
 #less then 0.4
 x3_very_poor=[]
 y3_very_poor=[]
@@ -147,6 +148,9 @@ class PageOne(tk.Frame):
         command=lambda: controller.show_frame(StartPage))
         button1.pack()
 
+def run_lasso():
+    os.system('python3 lasso.py')
+    os.system('python3 laso_plotter.py')
 
 
 def updated_graph_points(df,value_title):
@@ -307,9 +311,14 @@ class PageTwo(tk.Frame):
                         ]
         
         )
-        
-        
         button_to_plot_entered_value.pack()
+
+        button_to_draw_lasso=ttk.Button(self,text='Use Lasso Analyzer',
+        command=lambda:[
+            run_lasso()
+        ]
+        )
+        button_to_draw_lasso.pack()
 
         
 

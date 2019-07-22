@@ -49,9 +49,12 @@ all_selected=[]
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
    
-    df1 = pd.read_csv('signs_4.csv')
+    df1 = pd.read_csv('signs.csv')
     #create df with only required 
-    df_sign = df1[['SignId','pX','pY','Retro','COLOR']]
+
+    df1 = df1[['SignId','pX','pY','Retro','COLOR']]
+    df1 = df1.groupby('SignId')
+    df_sign = df1.get_group(int(input("Please enter sign for lasso analysis")))
 
     red_signs_x=[]
     red_signs_y=[]
