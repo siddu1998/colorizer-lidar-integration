@@ -147,10 +147,25 @@ class PageOne(tk.Frame):
         command=lambda: controller.show_frame(StartPage))
         button1.pack()
 
+user_pX=[]
+user_pY=[]
+user_dZ=[]
 
 
 def updated_graph_points(df):
-    print(df)
+    
+    
+
+    print(len(df['Retro']))
+    print(len(df['pX']))
+    print(len(df['pY']))
+    fig = plt.figure()
+    ax_pop = fig.add_subplot(111, projection='3d')
+    dx=0.03
+    dy=0.03
+    ax_pop.bar3d(df['pX'],df['pY'], 0, dx, dy, df['Retro'])
+    plt.show()
+
 
 
 class PageTwo(tk.Frame):
@@ -159,9 +174,6 @@ class PageTwo(tk.Frame):
         tk.Frame.__init__(self,parent)
         label=tk.Label(self,text="Visalizer",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
-        self.user_pX=[]
-        self.user_pY=[]
-        self.user_dZ=[]
 
         button1=ttk.Button(self,text="Go back to Homepage", 
         command=lambda: controller.show_frame(StartPage))
@@ -291,10 +303,8 @@ class PageTwo(tk.Frame):
         bin_value_to_show_points.pack()
 
         button_to_plot_entered_value=ttk.Button(self,text="Plot points below entered value", 
-        command=lambda: [print(bin_value_to_show_points.get()),
-                        print(type(float(bin_value_to_show_points.get()))),
-
-                        updated_graph_points(df1.loc[(df1['Retro'] <= float(bin_value_to_show_points.get()))].head()),
+        command=lambda: [
+        updated_graph_points(df1.loc[(df1['Retro'] <= float(bin_value_to_show_points.get()))])
 
                         ]
         
