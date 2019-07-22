@@ -95,7 +95,7 @@ z3_average_point=np.zeros(len(x3_average_point))
 z3_above_average=np.zeros(len(x3_above_average_point))
 z3_great_point=np.zeros(len(x3_great_point))
 
-LARGE_FONT=("Verdana",12)
+LARGE_FONT=("Verdana",9)
 
 
 
@@ -149,14 +149,19 @@ class PageOne(tk.Frame):
 
 
 
-
+def updated_graph_points(df):
+    print(df)
 
 
 class PageTwo(tk.Frame):
+
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
         label=tk.Label(self,text="Visalizer",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
+        self.user_pX=[]
+        self.user_pY=[]
+        self.user_dZ=[]
 
         button1=ttk.Button(self,text="Go back to Homepage", 
         command=lambda: controller.show_frame(StartPage))
@@ -183,17 +188,22 @@ class PageTwo(tk.Frame):
         toolbar.update()
         canvas_2d._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
+        
+        
+        
         median=statistics.median(retro_master)
         standard_deviation=statistics.stdev(retro_master)
 
-        median_label=tk.Label(self,text="Median:{}".format(median),font=LARGE_FONT)
+
+
+        median_label=tk.Label(self,text="Median of full Sign:{}".format(median),font=LARGE_FONT)
         median_label.pack(pady=10,padx=10)
         if median>0.7:
             classification_status='Good Sign No change neeed'
         if median<0.69:
             classification_status='Poor Sign as per retro Standards, Please consided changing the sign'
         
-        sd_label=tk.Label(self,text="Standard Deviation:{}".format(standard_deviation),font=LARGE_FONT)
+        sd_label=tk.Label(self,text="Standard Deviation of full:{}".format(standard_deviation),font=LARGE_FONT)
         sd_label.pack(pady=10,padx=10)
 
         classification_label=tk.Label(self,text="Classification Status {}".format(classification_status),font=LARGE_FONT)
@@ -203,6 +213,9 @@ class PageTwo(tk.Frame):
         print(type(ax1))
         ax2 = fig_2d.add_subplot(111)
         print(type(ax2))
+
+
+        
 
         if len(x3_great_point)>0:
             #color the point green
@@ -273,8 +286,22 @@ class PageTwo(tk.Frame):
             ]
             ) 
             button7.pack()
+        a=0
+        bin_value_to_show_points = tk.Entry(self)
+        bin_value_to_show_points.pack()
+
+        button_to_plot_entered_value=ttk.Button(self,text="Plot points below entered value", 
+        command=lambda: [print(bin_value_to_show_points.get()),
+                        print(type(float(bin_value_to_show_points.get()))),
+
+                        updated_graph_points(df1.loc[(df1['Retro'] <= float(bin_value_to_show_points.get()))].head()),
+
+                        ]
+        
+        )
         
         
+        button_to_plot_entered_value.pack()
 
         
 
