@@ -38,5 +38,5 @@ The lasso analysis allows user to draw over certain points they are interested t
 
 ![Image of Yaktocat](https://github.com/siddu1998/colorizer-lidar-integration/blob/master/images/draw.PNG)
 
-Analysis of the choose points are based on the weight they carry in the net histogram
+Analysis of the choosen points are based on the weight they carry in the net histogram
 ![Image of Yaktocat](https://github.com/siddu1998/colorizer-lidar-integration/blob/master/images/finsih.PNG)
