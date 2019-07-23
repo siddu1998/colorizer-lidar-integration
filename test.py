@@ -2,19 +2,19 @@
 ################################################
 Author : Sai Siddartha Maram    (msaisiddartha1@gmail.com)
 Data   : July 2019
-Summary: An application to visualize 3D LiDAR data and generate statistical insights about it and recommend the 
+Summary: 1. An application to visualize 3D LiDAR data and generate statistical insights about it and recommend the 
          apt replacement strategy
+         2. Provide smooth Selection mechanism using concept of Lasso selection
+         3. Generate and compare statistical trends upon regions of intrests
+         4. Dicscusses Retro intensity spatially
+         5. Study on retro intensity and its dependence with color
+         6. Study of retro intensity as a property of age
 ###############################################
-
-Description 
--------------------
-Filters signs based on the sign id and associates each LiDAR point with the corresponding normalized retro intensity values.
-Then plots 3D bar charts and histograms and classifies each point broadly into 4 classes based on their retro-intensity values.
-Post whicjh
-
 """
 
 
+
+#imports
 
 import os
 from mpl_toolkits.mplot3d import axes3d
@@ -33,17 +33,24 @@ from tkinter import ttk
 from PIL import ImageTk, Image
 import statistics
 
-
+#bins for the histogram
 bins=[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]
 
-#load data frame of sign TODO: get this from the user argument
-df1 = pd.read_csv('signs.csv')
-#create df with only required 
 
+
+#load data from the the lidar inventory
+df1 = pd.read_csv('signs.csv')
+
+#load only these coloumns
 df1 = df1[['SignId','pX','pY','Retro']]
+#group the signs by sign Id
 df1 = df1.groupby('SignId')
+
+#enter the sign you want to study
 sign=int(input("Please enter the sign you want to plot"))
+#get those particular signs
 df1 = df1.get_group(sign)
+
 #less then 0.4
 x3_very_poor=[]
 y3_very_poor=[]
@@ -66,6 +73,9 @@ dz_great_point=[]
 
 retro_master=[]
 
+
+
+#categorize points TODO: there is an efficient way to do it using iloc (time constraint hence left it here using simple for loop)
 for i,row in df1.iterrows():
     retro_master.append(row['Retro'])
     if row['Retro']<0.4:
@@ -90,17 +100,21 @@ for i,row in df1.iterrows():
 dx=0.03
 dy=0.03
 
+
+
 #heights of each point category
 z3_very_poor=np.zeros(len(x3_very_poor))
 z3_average_point=np.zeros(len(x3_average_point))
 z3_above_average=np.zeros(len(x3_above_average_point))
 z3_great_point=np.zeros(len(x3_great_point))
 
+
+#font size
 LARGE_FONT=("Verdana",9)
 
 
 
-
+#Creating the Tkinter APP
 class SignAnalyzer(tk.Tk):
     def __init__(self,*args,**kwargs):
         tk.Tk.__init__(self,*args,**kwargs)
@@ -123,6 +137,8 @@ class SignAnalyzer(tk.Tk):
         frame.tkraise()
 
 
+
+#Front page
 class StartPage(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
@@ -132,7 +148,7 @@ class StartPage(tk.Frame):
         label1.pack(pady=10,padx=10)
         
         
-        
+        #Button to populate histogram and the whole chart itself
         button2=ttk.Button(self,text="Plot Sign", 
         command=lambda: controller.show_frame(PageTwo))
 
@@ -148,12 +164,14 @@ class PageOne(tk.Frame):
         command=lambda: controller.show_frame(StartPage))
         button1.pack()
 
+
+#function to run lasso.py and lasso_plotter.py
 def run_lasso():
     os.system('python lasso.py')
     os.system('python laso_plotter.py')
     return
 
-
+#when user wants his points between certain ranges we can plot using this function
 def updated_graph_points(df,value_title):
 
     print(len(df['Retro']))
@@ -165,8 +183,8 @@ def updated_graph_points(df,value_title):
     ax_pop = fig.add_subplot(111, projection='3d')
     dx=0.03
     dy=0.03
-    ax_pop.bar3d(df['pX'],df['pY'], 0, dx, dy, df['Retro'])
-    plt.title('This contains all signs below {}'.format(value_title))
+    ax_pop.bar3d(df['pX'],df['pY'], 0, dx, dy, df['Retro'],color='b')
+    plt.title('This contains all signs below {} marked in blue'.format(value_title))
     plt.show()
 
 
