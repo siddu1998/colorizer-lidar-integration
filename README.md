@@ -12,7 +12,7 @@ The insight tool provides an opportunity to analyse and study the behaviour of r
 1. Statistical analysis and sign replacement strategies
 2. 3D visualiation of the LiDAR signs based on retro
 3. Identifying areas of damage on the sign
-4. Realtion between color and its effect on retro intensity
+4. Relation between color and its effect on retro intensity
 5. Study specific areas of the sign using Lasso selection technique
 6. Behaviour of sign and its relation with retro intensity with age and persistent energy absorbtion
 
