@@ -24,7 +24,7 @@ From various statistic distributions the tool uses median to give recommendation
 
 ## Tool Description
 
-The tool loads the data the corresponding user selected sign id from the lidar inventory and populates histogram and the corresponding 3D heights based on the retro values
+The tool loads the data (user selected sign id) from the lidar inventory and populates histogram and the corresponding 3D heights based on the retro values
 
 
 ![Image of Yaktocat](https://github.com/siddu1998/colorizer-lidar-integration/blob/master/images/first_page.PNG)
