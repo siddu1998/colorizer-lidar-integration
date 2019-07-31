@@ -175,7 +175,7 @@ class SignAnalyzer(tk.Tk):
         container.grid_columnconfigure(0,weight=1)
 
         self.frames={}
-        for F in (StartPage,PageOne,PageTwo):
+        for F in (StartPage,PageOne,PageTwo,PageThree):
             frame = F(container,self)
             self.frames[F]=frame
             frame.grid(row=0,column=0,sticky="nsew")
@@ -202,7 +202,7 @@ class StartPage(tk.Frame):
         button2=ttk.Button(self,text="Plot Sign", 
         command=lambda: controller.show_frame(PageTwo))
 
-        button2.pack()
+        # button2.pack()
 
         # lasso_button=ttk.Button(self,text='Go to Lasso Tool',command=lambda:controller.show_frame(PageThree))
         # lasso_button.pack()
@@ -289,28 +289,26 @@ class PageTwo(tk.Frame):
         command=lambda: controller.show_frame(StartPage))
         button1.pack()
 
-        self.median_selected=0
-        self.std_dev_selected=0
 
-        self.fig = Figure(figsize=(5,5), dpi=100)
+        fig = Figure(figsize=(5,5), dpi=100)
 
-        self.fig_2d = Figure(figsize=(6,5),dpi=50)
+        fig_2d = Figure(figsize=(6,5),dpi=50)
     
-        self.canvas=FigureCanvasTkAgg(self.fig,self)
-        self.canvas.draw()
-        self.canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=False)
+        canvas=FigureCanvasTkAgg(fig,self)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=False)
 
         # toolbar = NavigationToolbar2Tk(canvas, self)
         # toolbar.update()
         # canvas._tkcanvas.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
-        self.canvas_2d=FigureCanvasTkAgg(self.fig_2d,self)
-        self.canvas_2d.draw()
-        self.canvas_2d.get_tk_widget().pack(side=tk.LEFT,fill=tk.BOTH,expand=True)
+        canvas_2d=FigureCanvasTkAgg(fig_2d,self)
+        canvas_2d.draw()
+        canvas_2d.get_tk_widget().pack(side=tk.LEFT,fill=tk.BOTH,expand=True)
 
-        self.toolbar = NavigationToolbar2Tk(self.canvas_2d, self)
-        self.toolbar.update()
-        self.canvas_2d._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        toolbar = NavigationToolbar2Tk(canvas_2d, self)
+        toolbar.update()
+        canvas_2d._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         
         
@@ -333,32 +331,34 @@ class PageTwo(tk.Frame):
         classification_label=tk.Label(self,text="Classification Status {}".format(classification_status),font=LARGE_FONT)
         classification_label.pack(pady=10,padx=10)
 
-        self.ax1 = self.fig.add_subplot(111, projection='3d')
-        self.ax2 = self.fig_2d.add_subplot(111)
+        ax1 = fig.add_subplot(111, projection='3d')
+        print(type(ax1))
+        ax2 = fig_2d.add_subplot(111)
+        print(type(ax2))
 
 
         
 
         if len(x3_great_point)>0:
             #color the point green
-            self.ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color='g')
+            ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color='g')
         else:
             pass
         if len(x3_average_point)>0:
             #color the point y
-            self.ax1.bar3d(x3_average_point, y3_average_point,z3_average_point, dx, dy, dz_average_point,color='y')
+            ax1.bar3d(x3_average_point, y3_average_point,z3_average_point, dx, dy, dz_average_point,color='y')
         else:
             pass
 
         if len(x3_above_average_point)>0:
             #color the point orange
-            self.ax1.bar3d(x3_above_average_point, y3_above_average_point, z3_above_average, dx, dy,dz_above_average_point ,color='m')
+            ax1.bar3d(x3_above_average_point, y3_above_average_point, z3_above_average, dx, dy,dz_above_average_point ,color='m')
         else:
             pass
 
         if len(x3_very_poor)>0:
             #color the point orange
-            self.ax1.bar3d(x3_very_poor, y3_very_poor, z3_very_poor, dx, dy,dz_very_poor,color='r')
+            ax1.bar3d(x3_very_poor, y3_very_poor, z3_very_poor, dx, dy,dz_very_poor,color='r')
         else:
             pass
         
@@ -367,32 +367,32 @@ class PageTwo(tk.Frame):
         if(len(x3_great_point)>0):
             button3=ttk.Button(self,text="Only Good Points",
             command=lambda: [
-            self.ax1.clear(),
-            self.ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color='g')
+            ax1.clear(),
+            ax1.bar3d(x3_great_point, y3_great_point,z3_great_point, dx, dy, dz_great_point,color='g')
             ]
             ) 
             button3.pack(side='left', padx='5', pady='10')
         if(len(x3_very_poor)>0):
             button4=ttk.Button(self,text="Only Poor Points",
             command=lambda: [
-            self.ax1.clear(),
-            self.ax1.bar3d(x3_very_poor, y3_very_poor,z3_very_poor, dx, dy, dz_very_poor,color='r')
+            ax1.clear(),
+            ax1.bar3d(x3_very_poor, y3_very_poor,z3_very_poor, dx, dy, dz_very_poor,color='r')
             ]
             ) 
             button4.pack(side='left', padx='5', pady='10')
         if(len(x3_above_average_point)>0):
             button5=ttk.Button(self,text="Only Above averge points",
             command=lambda: [
-            self.ax1.clear(),
-            self.ax1.bar3d(x3_above_average_point, y3_above_average_point,z3_above_average, dx, dy, dz_above_average_point,color='m')
+            ax1.clear(),
+            ax1.bar3d(x3_above_average_point, y3_above_average_point,z3_above_average, dx, dy, dz_above_average_point,color='m')
             ]
             ) 
             button5.pack(side='left', padx='5', pady='10')
         if(len(x3_average_point)>0):
             button6=ttk.Button(self,text="Only average point",
             command=lambda: [
-            self.ax1.clear(),
-            self.ax1.bar3d(x3_average_point, y3_average_point,z3_average_point, dx, dy, dz_average_point,color='b')
+            ax1.clear(),
+            ax1.bar3d(x3_average_point, y3_average_point,z3_average_point, dx, dy, dz_average_point,color='b')
             ]
             ) 
             button6.pack(side='left', padx='5', pady='10')
@@ -401,10 +401,10 @@ class PageTwo(tk.Frame):
             button7=ttk.Button(self,text="Histograms",
             command=lambda: [
         
-            self.ax2.hist(dz_very_poor,bins,histtype='bar',color='r'),
-            self.ax2.hist(dz_great_point,bins,histtype='bar',color='g'),
-            self.ax2.hist(dz_average_point,bins,histtype='bar',color='y'),
-            self.ax2.hist(dz_above_average_point,bins,histtype='bar',color='m')
+            ax2.hist(dz_very_poor,bins,histtype='bar',color='r'),
+            ax2.hist(dz_great_point,bins,histtype='bar',color='g'),
+            ax2.hist(dz_average_point,bins,histtype='bar',color='y'),
+            ax2.hist(dz_above_average_point,bins,histtype='bar',color='m')
             ]
             ) 
             button7.pack(side='left', padx='5', pady='10')
@@ -421,15 +421,19 @@ class PageTwo(tk.Frame):
         )
         button_to_plot_entered_value.pack(side='left', padx='5', pady='10')
 
+        # button_to_draw_lasso=ttk.Button(self,text='Use Lasso Analyzer',
+        # command=lambda:[
+        #     run_lasso()
+        # ]
+        # )
+        # button_to_draw_lasso.pack()
 
         
 
-        self.ax1.set_xlabel('x')
-        self.ax1.set_ylabel('y')
-        self.ax1.set_zlabel('retro')
-        self.ax1.set_zlim3d(0,1)
-        self.ax1.set_title("3D retro-color-plot")
-        self.ax2.set_title("All Historgrams")
+        ax1.set_xlabel('x')
+        ax1.set_ylabel('y')
+        ax1.set_zlabel('retro')
+        ax1.set_zlim3d(0,1)
         self.subplot_kw = dict(xlim=(0, 1), ylim=(0, 1), autoscale_on=False)
         self.bins=[0,0.1,0.2,0.3,0.4,0.5,0.525,0.55,0.6,0.65,0.675,0.7,0.725,0.75,0.775,0.8,0.85,0.9,1]
         print(len(dz))
@@ -483,8 +487,14 @@ class PageTwo(tk.Frame):
 
         all_points_selected=[]
 
-        for point in red_points_selected[0]:            
+        for point in red_points_selected[0]:
+            
             row_red=df1.loc[(df1['pX'] == point[0]) & (df1['pY'] == point[1])]
+            # print("---------------------")
+            # print(type(row_red['SignId']))
+            # print(int(row_red['SignId']))
+            # print(float(row_red['Retro']))
+            # print('-------------------')
             red_retro_points.append([int(row_red['SignId']),float(row_red['pX']),float(row_red['pY']),float(row_red['Retro'])])
         for point in white_points_selected[0]:
             row_white=(df1.loc[(df1['pX'] == point[0]) & (df1['pY'] == point[1])])
@@ -523,40 +533,121 @@ class PageTwo(tk.Frame):
 
             
         print("[INFO] You have selected {} red and {} white points {} blue points {} green points".format(len(red_retro_points),len(white_retro_points),len(blue_retro_points),len(green_retro_points)))
-        self.update_histograms_based_on_selected()   
+            #print(len(all_selected))
 
 
 
-    def update_histograms_based_on_selected(self):
-        df_red_retro_selected=pd.read_csv('../Data/red_retro_points.csv')
-        df_white_retro_selected=pd.read_csv('../Data/white_retro_points.csv')
-        df_blue_retro_selected=pd.read_csv('../Data/blue_retro_points.csv')
-        df_green_retro_selected=pd.read_csv('../Data/green_retro_points.csv')
-        df_yellow_retro_selected=pd.read_csv('../Data/yellow_retro_points.csv')
 
-        df_red_retro_selected = df_red_retro_selected[['SignId','pX','pY','Retro']]
-        df_white_retro_selected=df_white_retro_selected[['SignId','pX','pY','Retro']]
-        df_blue_retro_selected=df_blue_retro_selected[['SignId','pX','pY','Retro']]
-        df_green_retro_selected=df_green_retro_selected[['SignId','pX','pY','Retro']]
-        df_yellow_retro_selected=df_yellow_retro_selected[['SignId','pX','pY','Retro']]
-        df_all_points=df1['Retro']
 
-        self.ax2.clear()
+# class PageThree(tk.Frame):
+#     def __init__(self,parent,controller):
+#         tk.Frame.__init__(self,parent)
         
-        bins = [0,0.1,0.2,0.3,0.4,0.425,0.45,0.475,0.5,0.525,0.550,0.575,0.6,0.625,0.65,0.675,0.70,0.725,0.75,0.775,0.8,0.825,0.85,0.875,0.9,0.925,0.95,0.975,1]
+#         self.label=tk.Label(self,text="Lasso inbuilt",font=LARGE_FONT)
+#         self.label.pack(pady=10,padx=10)
+#         self.subplot_kw = dict(xlim=(0, 1), ylim=(0, 1), autoscale_on=False)
+#         self.bins=[0,0.1,0.2,0.3,0.4,0.5,0.525,0.55,0.6,0.65,0.675,0.7,0.725,0.75,0.775,0.8,0.85,0.9,1]
+#         print(len(dz))
 
-
-
-        self.ax2.hist(df_all_points,bins,histtype='bar',color='b',rwidth=0.8)
-        self.ax2.hist(df_white_retro_selected['Retro'], bins,histtype='bar',color='black', rwidth=0.8)
-        self.ax2.hist(df_red_retro_selected['Retro'], bins,histtype='bar',color='r',alpha=0.3, rwidth=0.8)
-        self.ax2.hist(df_blue_retro_selected['Retro'], bins,histtype='bar',color='b',alpha=0.3, rwidth=0.8)
-        self.ax2.hist(df_yellow_retro_selected['Retro'], bins,histtype='bar',color='y',alpha=0.3, rwidth=0.8)
-        self.ax2.hist(df_green_retro_selected['Retro'], bins,histtype='bar',color='g',alpha=0.3, rwidth=0.8)
-
-
+#         #self.fig,self.ax = plt.subplots(subplot_kw=self.subplot_kw)
         
+#         self.fig_lasso=Figure(figsize=(5,4),dpi=100)
+        
+#         self.canvas=FigureCanvasTkAgg(self.fig_lasso,self)
+#         self.canvas.draw()
+#         self.canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=False)
 
+#         self.ax=self.fig_lasso.add_subplot(111)
+
+#         self.pts = self.ax.scatter(red_signs_x, red_signs_y, color='r',s=80)
+#         #white point selector
+#         self.pts_1 = self.ax.scatter(white_signs_x, white_signs_y, color='grey',s=80)
+#         #blue point selector
+#         self.pts_2 = self.ax.scatter(blue_signs_x, blue_signs_y, color='b',s=80)
+#         #green point selector
+#         self.pts_3 = self.ax.scatter(green_signs_x, green_signs_y, color='g',s=80)
+#         #yellow point selector
+#         self.pts_4 = self.ax.scatter(yellow_signs_x,yellow_signs_y, color='y',s=80)
+        
+#         self.selector = SelectFromCollection(self.ax, self.pts)
+#         self.selector_1=SelectFromCollection(self.ax,self.pts_1)
+#         self.selector_2=SelectFromCollection(self.ax,self.pts_2)
+#         self.selector_3=SelectFromCollection(self.ax,self.pts_3)
+#         self.selector_4=SelectFromCollection(self.ax,self.pts_4)
+#         #self.fig.canvas.mpl_connect("key_press_event", self.accept())
+#         self.ax.set_title("Retro Polygon tool")
+#         #self.canvas.show()
+#         self.button_accept_points=ttk.Button(self,text="Finalized points", 
+#         command= self.enter_click)
+#         self.button_accept_points.pack()
+
+#     def enter_click(self):
+#         red_points_selected=[self.selector.xys[self.selector.ind]]
+#         white_points_selected=[self.selector_1.xys[self.selector_1.ind]]
+#         blue_points_selected=[self.selector_2.xys[self.selector_2.ind]]
+#         green_points_selected=[self.selector_3.xys[self.selector_3.ind]]
+#         yellow_points_selected=[self.selector_4.xys[self.selector_4.ind]]
+        
+#         red_retro_points=[]
+#         white_retro_points=[]
+#         green_retro_points=[]
+#         yellow_retro_points=[]
+#         blue_retro_points=[]
+
+
+
+#         all_points_selected=[]
+
+#         for point in red_points_selected[0]:
+            
+#             row_red=df1.loc[(df1['pX'] == point[0]) & (df1['pY'] == point[1])]
+#             # print("---------------------")
+#             # print(type(row_red['SignId']))
+#             # print(int(row_red['SignId']))
+#             # print(float(row_red['Retro']))
+#             # print('-------------------')
+#             red_retro_points.append([int(row_red['SignId']),float(row_red['pX']),float(row_red['pY']),float(row_red['Retro'])])
+#         for point in white_points_selected[0]:
+#             row_white=(df1.loc[(df1['pX'] == point[0]) & (df1['pY'] == point[1])])
+#             white_retro_points.append([int(row_white['SignId']),float(row_white['pX']),float(row_white['pY']),float(row_white['Retro'])])
+
+#         for point in blue_points_selected[0]:     
+#             row_blue=df1.loc[(df1['pX'] == point[0]) & (df1['pY'] == point[1])]
+#             blue_retro_points.append([int(row_blue['SignId']),float(row_blue['pX']),float(row_blue['pY']),float(row_blue['Retro'])])
+
+#         for point in green_points_selected[0]:
+#             row_green=df1.loc[(df1['pX'] == point[0]) & (df1['pY'] == point[1])]
+#             green_retro_points.append([int(row_green['SignId']),float(row_green['pX']),float(row_green['pY']),float(row_green['Retro'])])
+
+#         for point in yellow_points_selected[0]:
+#             row_yellow=df1.loc[(df1['pX'] == point[0]) & (df1['pY'] == point[1])]
+#             yellow_retro_points.append([int(row_yellow['SignId']),float(row_yellow['pX']),float(row_yellow['pY']),float(row_yellow['Retro'])])
+            
+
+            
+#         df_white= pd.DataFrame(white_retro_points, columns=["SignId","pX","pY","Retro"])
+#         df_white.to_csv('../Data/white_retro_points.csv', index=True)
+
+#         df_red=pd.DataFrame(red_retro_points,columns=["SignId","pX","pY","Retro"])
+#         df_red.to_csv('../Data/red_retro_points.csv',index=True)
+
+
+#         df_blue=pd.DataFrame(blue_retro_points,columns=["SignId","pX","pY","Retro"])
+#         df_blue.to_csv('../Data/blue_retro_points.csv',index=True)
+
+#         df_green=pd.DataFrame(green_retro_points,columns=["SignId","pX","pY","Retro"])
+#         df_green.to_csv('../Data/green_retro_points.csv',index=True)
+
+#         df_yellow=pd.DataFrame(yellow_retro_points,columns=["SignId","pX","pY","Retro"])
+#         df_yellow.to_csv('../Data/yellow_retro_points.csv',index=True)
+
+
+            
+#         print("[INFO] You have selected {} red and {} white points {} blue points {} green points".format(len(red_retro_points),len(white_retro_points),len(blue_retro_points),len(green_retro_points)))
+#             #print(len(all_selected))
+
+
+     
                 
 app=SignAnalyzer()
 app.mainloop()
