@@ -124,7 +124,6 @@ if __name__ == '__main__':
         if event.key == "enter":
             
             red_points_selected=[selector.xys[selector.ind]]
-            
             white_points_selected=[selector_1.xys[selector_1.ind]]
             blue_points_selected=[selector_2.xys[selector_2.ind]]
             green_points_selected=[selector_3.xys[selector_3.ind]]
@@ -143,11 +142,11 @@ if __name__ == '__main__':
             for point in red_points_selected[0]:
                 
                 row_red=df_sign.loc[(df_sign['pX'] == point[0]) & (df_sign['pY'] == point[1])]
-                print("---------------------")
-                print(type(row_red['SignId']))
-                print(int(row_red['SignId']))
-                print(float(row_red['Retro']))
-                print('-------------------')
+                # print("---------------------")
+                # print(type(row_red['SignId']))
+                # print(int(row_red['SignId']))
+                # print(float(row_red['Retro']))
+                # print('-------------------')
                 red_retro_points.append([int(row_red['SignId']),float(row_red['pX']),float(row_red['pY']),float(row_red['Retro'])])
                
             for point in white_points_selected[0]:
@@ -189,11 +188,11 @@ if __name__ == '__main__':
             
             print("[INFO] You have selected {} red and {} white points {} blue points {} green points".format(len(red_retro_points),len(white_retro_points),len(blue_retro_points),len(green_retro_points)))
             print(len(all_selected))
-            selector.disconnect()
-            selector_1.disconnect()
-            selector_2.disconnect()
-            selector_3.disconnect()
-            selector_4.disconnect()
+            # selector.disconnect()
+            # selector_1.disconnect()
+            # selector_2.disconnect()
+            # selector_3.disconnect()
+            # selector_4.disconnect()
 
             ax.set_title("")
             fig.canvas.draw()
