@@ -219,11 +219,6 @@ class PageOne(tk.Frame):
         button1.pack()
 
 
-# function to run lasso.py and lasso_plotter.py
-# def run_lasso():
-#     os.system('python lasso.py')
-#     os.system('python lasso_plotter.py')
-#     return
 
 #when user wants his points between certain ranges we can plot using this function
 def updated_graph_points(df,value_title):
@@ -318,20 +313,24 @@ class PageTwo(tk.Frame):
         median=statistics.median(retro_master)
         standard_deviation=statistics.stdev(retro_master)
 
+        self.color_code_3d_green=tk.Label(self,text="Green >0.61",bg='black',foreground='green')
+        self.color_code_3d_green.pack(side='top', anchor='e')
+        
+        self.color_code_3d_purple=tk.Label(self,text="0.51<purple<0.60",bg='black',foreground='magenta')
+        self.color_code_3d_purple.pack(side='top', anchor='e')
 
-
-        median_label=tk.Label(self,text="Median of full Sign:{}".format(median),font=LARGE_FONT)
-        median_label.pack(pady=10,padx=10)
+        median_label=tk.Label(self,text="Median of full Sign:{}".format(median),font=LARGE_FONT,bg='black',foreground="yellow")
+        median_label.pack(side='bottom',pady=10,padx=10)
         if median>0.7:
             classification_status='Good Sign No change neeed'
         if median<0.69:
             classification_status='Poor Sign as per retro Standards, Please consided changing the sign'
         
-        sd_label=tk.Label(self,text="Standard Deviation of full:{}".format(standard_deviation),font=LARGE_FONT)
-        sd_label.pack(pady=10,padx=10)
+        sd_label=tk.Label(self,text="Standard Deviation of full:{}".format(standard_deviation),font=LARGE_FONT,bg='black',foreground="yellow")
+        sd_label.pack(side='bottom',pady=10,padx=10)
 
-        classification_label=tk.Label(self,text="Classification Status {}".format(classification_status),font=LARGE_FONT)
-        classification_label.pack(pady=10,padx=10)
+        classification_label=tk.Label(self,text="Classification Status {}".format(classification_status),font=LARGE_FONT,bg='black',foreground="yellow")
+        classification_label.pack(side='bottom',pady=10,padx=10)
 
         self.ax1 = self.fig.add_subplot(111, projection='3d')
         self.ax2 = self.fig_2d.add_subplot(111)
@@ -526,7 +525,6 @@ class PageTwo(tk.Frame):
         self.update_histograms_based_on_selected()   
 
 
-
     def update_histograms_based_on_selected(self):
         df_red_retro_selected=pd.read_csv('../Data/red_retro_points.csv')
         df_white_retro_selected=pd.read_csv('../Data/white_retro_points.csv')
@@ -548,7 +546,7 @@ class PageTwo(tk.Frame):
 
 
         self.ax2.hist(df_all_points,bins,histtype='bar',color='b',rwidth=0.8)
-        self.ax2.hist(df_white_retro_selected['Retro'], bins,histtype='bar',color='black', rwidth=0.8)
+        self.ax2.hist(df_white_retro_selected['Retro'], bins,histtype='bar',color='gray', rwidth=0.8)
         self.ax2.hist(df_red_retro_selected['Retro'], bins,histtype='bar',color='r',alpha=0.3, rwidth=0.8)
         self.ax2.hist(df_blue_retro_selected['Retro'], bins,histtype='bar',color='b',alpha=0.3, rwidth=0.8)
         self.ax2.hist(df_yellow_retro_selected['Retro'], bins,histtype='bar',color='y',alpha=0.3, rwidth=0.8)
@@ -560,3 +558,4 @@ class PageTwo(tk.Frame):
                 
 app=SignAnalyzer()
 app.mainloop()
+
