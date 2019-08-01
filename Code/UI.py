@@ -167,8 +167,8 @@ class PageOne(tk.Frame):
 
 #function to run lasso.py and lasso_plotter.py
 def run_lasso():
-    os.system('python lasso.py')
-    os.system('python lasso_plotter.py')
+    os.system('python3 lasso.py')
+    os.system('python3 lasso_plotter.py')
     return
 
 #when user wants his points between certain ranges we can plot using this function
