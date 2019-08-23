@@ -36,10 +36,16 @@ The tool allows us to get insight on the spurious points and also generate insig
 
 ![Image of Yaktocat](https://github.com/siddu1998/colorizer-lidar-integration/blob/master/images/user_click.PNG)
 
-The lasso analysis allows user to draw over certain points they are interested to study, this allows us to study the behaviour and trends of retrointensity based on age, color and region
+The lasso analysis allows user to draw ovIndia1983er certain points they are interested to study, this allows us to study the behaviour and trends of retrointensity based on age, color and region
 
 ![Image of Yaktocat](https://github.com/siddu1998/colorizer-lidar-integration/blob/master/images/draw.PNG)
 
 Analysis of the choosen points are based on the weight they carry in the net histogram
 ![Image of Yaktocat](https://github.com/siddu1998/colorizer-lidar-integration/blob/master/images/finsih.PNG)
 --
+
+
+
+### Instructions on how to use the tool
+
+
