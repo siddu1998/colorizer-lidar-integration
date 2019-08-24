@@ -50,4 +50,4 @@ Analysis of the choosen points are based on the weight they carry in the net his
 Place your data in the Data folder. Data consists of an .csv sheet named signs.csv. The GUI tool uses pX,pY,Retro,Color values for each sign_id. Make sure you fill these coloumns correctly as per the data you have collected.
 
 In the code section, you will find the UI_with_lasso.py, this is the core algorithm and has the GUI code within. Install the dependencies required and run the 
-                ''' python UI_with_lasso.py'''
+                ```python UI_with_lasso.py```
