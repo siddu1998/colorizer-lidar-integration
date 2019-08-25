@@ -8,7 +8,7 @@ Lab     :  Research Assistant Transportation Lab, GeorgiaTech
 
 Professor and Supervisor : Dr. Yi-Chang (James) Tsai
 
-contact : smaram7@gatech.edu
+contact : smaram7@gatech.edu | smaram_be16@thapar.edu | msaisiddartha1@gmail.com
 ## Summary
 The insight tool provides an opportunity to analyse and study the behaviour of retro-intensity captured form LiDAR on traffic signs. Prominent features of the tool as for the latest push include 
 1. Statistical analysis and sign replacement strategies
