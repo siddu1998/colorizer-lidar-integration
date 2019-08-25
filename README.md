@@ -47,7 +47,8 @@ Analysis of the choosen points are based on the weight they carry in the net his
 
 
 ### Instructions on how to use the tool
-Place your data in the Data folder. Data consists of an .csv sheet named signs.csv. The GUI tool uses pX,pY,Retro,Color values for each sign_id. Make sure you fill these coloumns correctly as per the data you have collected.
+Place your data in the Data folder. Data consists of an .csv sheet named signs.csv. The GUI tool uses pX,pY,Retro,Color values for each sign_id. Make sure you fill these coloumns correctly as per the data you have collected. Please note this application is developed based on the output of the colorizer if you plan to use different data, make sure you adjust your data coloumn names accordingly. Do not use the GPS coordinates to plot the graphs, since the points will be highly indisiguisable on 3d plots so make sure you use only pX and pY. 
 
-In the code section, you will find the UI_with_lasso.py, this is the core algorithm and has the GUI code within. Install the dependencies required and run the 
+In the code section, you will find the UI_with_lasso.py, this is the core algorithm and has the GUI code within. Install the dependencies required and run the. 
                 ```python UI_with_lasso.py```
+Post which all the tools can be used from the GUI. 
